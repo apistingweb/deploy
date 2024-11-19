@@ -148,7 +148,7 @@ function startCountdown() {
                                     <div class="STING-WEB-Bottom">
                                         <span class="STING-WEB-Betola Tv">${match.Tv}</span>
                                         <span class="STING-WEB-Betola Mic">${match.Mic}</span>
-                                        <span class="STING-WEB-Betola Cup">${match.['Cup-Name']}</span>
+                                        <span class="STING-WEB-Betola Cup">${match['Cup-Name']}</span>
                                     </div>
                                     <div class="STING-WEB-Here">
                                         <span class="STING-WEB-Play"></span>
