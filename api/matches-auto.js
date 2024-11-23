@@ -7,10 +7,10 @@
 =========== [ STING WEB ] ==========*/
 function startCountdown() {
     const matches = document.querySelectorAll(".STING-WEB-Match");
-
-    // الحصول على التوقيت المحلي للزائر (بالفارق الزمني بالدقائق)
+    
+    // الحصول على التوقيت المحلي للزائر
     const userTimeZoneOffset = new Date().getTimezoneOffset(); // المنطقة الزمنية للمستخدم (بـ دقائق)
-
+    
     matches.forEach((match) => {
         const countdownElement = match.querySelector(".STING-WEB-Time-Descending");
         const timeElement = match.querySelector(".STING-WEB-Time");
@@ -21,31 +21,25 @@ function startCountdown() {
         const matchStartTime = countdownElement.getAttribute("data-start");
         const matchEndTime = countdownElement.getAttribute("data-end");
 
-        // تحويل الوقت من GMT+3 إلى UTC (GMT+0)
-        const matchStartDate = new Date(matchStartTime); // الوقت الأصلي (بتوقيت GMT+3)
-        const matchEndDate = new Date(matchEndTime); // الوقت الأصلي (بتوقيت GMT+3)
-
-        // تحويل التوقيت إلى UTC (نقوم بطرح 3 ساعات لتوحيد الوقت إلى UTC)
-        const utcStartDate = new Date(matchStartDate.getTime() - 3 * 60 * 60 * 1000); // تحويل وقت البداية إلى UTC
-        const utcEndDate = new Date(matchEndDate.getTime() - 3 * 60 * 60 * 1000); // تحويل وقت النهاية إلى UTC
+        const matchStartDate = new Date(matchStartTime); // تاريخ بداية المباراة
+        const matchEndDate = new Date(matchEndTime); // تاريخ نهاية المباراة
 
         // تعديل التوقيت ليظهر حسب توقيت المنطقة الزمنية للزائر
-        const localStartDate = new Date(utcStartDate.getTime() + userTimeZoneOffset * 60000); // إضافة الفارق الزمني للزائر
-        const localEndDate = new Date(utcEndDate.getTime() + userTimeZoneOffset * 60000); // إضافة الفارق الزمني للزائر
+        const localStartDate = new Date(matchStartDate.getTime() - userTimeZoneOffset * 60000);
+        const localEndDate = new Date(matchEndDate.getTime() - userTimeZoneOffset * 60000);
 
         // عرض الوقت حسب توقيت المنطقة الزمنية للمستخدم
         timeElement.textContent = localStartDate.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
             hour12: true,
-            timeZoneName: 'short' // يمكن إضافة هذا لعرض اسم المنطقة الزمنية
         });
 
         // دالة لحساب العد التنازلي للمباراة
         const interval = setInterval(() => {
             const now = new Date();
-            const timeRemaining = localStartDate - now;
-            const timeToEnd = localEndDate - now;
+            const timeRemaining = matchStartDate - now;
+            const timeToEnd = matchEndDate - now;
 
             if (timeToEnd <= 0) {
                 hereElement.textContent = "المباراة انتهت";
@@ -89,8 +83,6 @@ function startCountdown() {
         }, 100);
     });
 }
-
-
 
         function getMatchLinks() {
             const linksElement = document.querySelector('match-link');
