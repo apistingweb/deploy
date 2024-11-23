@@ -25,8 +25,8 @@ function startCountdown() {
         const matchEndDate = new Date(matchEndTime); // تاريخ نهاية المباراة
 
         // تعديل التوقيت ليظهر حسب توقيت المنطقة الزمنية للزائر
-        const localStartDate = new Date(matchStartDate.getTime() - userTimeZoneOffset * 60000);
-        const localEndDate = new Date(matchEndDate.getTime() - userTimeZoneOffset * 60000);
+        const localStartDate = new Date(matchStartDate.getTime() - userTimeZoneOffset * 60000 - 3 * 60 * 60 * 1000);
+        const localEndDate = new Date(matchEndDate.getTime() - userTimeZoneOffset * 60000 - 3 * 60 * 60 * 1000);
 
         // عرض الوقت حسب توقيت المنطقة الزمنية للمستخدم
         timeElement.textContent = localStartDate.toLocaleTimeString("en-US", {
