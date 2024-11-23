@@ -7,25 +7,36 @@
 =========== [ STING WEB ] ==========*/
 function startCountdown() {
     const matches = document.querySelectorAll(".STING-WEB-Match");
+    
+    // الحصول على التوقيت المحلي للزائر
+    const userTimeZoneOffset = new Date().getTimezoneOffset(); // المنطقة الزمنية للمستخدم (بـ دقائق)
+    
     matches.forEach((match) => {
         const countdownElement = match.querySelector(".STING-WEB-Time-Descending");
         const timeElement = match.querySelector(".STING-WEB-Time");
         const statusElement = match.querySelector(".STING-WEB-Status");
         const hereElement = match.querySelector(".STING-WEB-Play");
 
+        // الحصول على توقيت بداية ونهاية المباراة بتوقيت ثابت (GMT+03:00)
         const matchStartTime = countdownElement.getAttribute("data-start");
         const matchEndTime = countdownElement.getAttribute("data-end");
 
-        const matchStartDate = new Date(matchStartTime);
-        const matchEndDate = new Date(matchEndTime);
+        const matchStartDate = new Date(matchStartTime); // تاريخ بداية المباراة
+        const matchEndDate = new Date(matchEndTime); // تاريخ نهاية المباراة
 
-        timeElement.textContent = matchStartDate.toLocaleTimeString("en-US", {
+        // تعديل التوقيت ليظهر حسب توقيت المنطقة الزمنية للزائر
+        const localStartDate = new Date(matchStartDate.getTime() - userTimeZoneOffset * 60000);
+        const localEndDate = new Date(matchEndDate.getTime() - userTimeZoneOffset * 60000);
+
+        // عرض الوقت حسب توقيت المنطقة الزمنية للمستخدم
+        timeElement.textContent = localStartDate.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
             hour12: true,
-            timeZoneName: 'short'  
+            timeZoneName: 'short' // يمكن إضافة هذا لعرض اسم المنطقة الزمنية
         });
 
+        // دالة لحساب العد التنازلي للمباراة
         const interval = setInterval(() => {
             const now = new Date();
             const timeRemaining = matchStartDate - now;
@@ -73,6 +84,7 @@ function startCountdown() {
         }, 100);
     });
 }
+
 
         function getMatchLinks() {
             const linksElement = document.querySelector('match-link');
