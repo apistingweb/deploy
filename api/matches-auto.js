@@ -6,74 +6,73 @@
 ~> Desgin URL        : https://www.sting-web.com
 =========== [ STING WEB ] ==========*/
 function startCountdown() {
-        const matches = document.querySelectorAll(".STING-WEB-Match");
-        matches.forEach((match) => {
-          const countdownElement = match.querySelector(
-            ".STING-WEB-Time-Descending"
-          );
-          const timeElement = match.querySelector(".STING-WEB-Time");
-          const statusElement = match.querySelector(".STING-WEB-Status");
-          const hereElement = match.querySelector(".STING-WEB-Play");
+    const matches = document.querySelectorAll(".STING-WEB-Match");
+    matches.forEach((match) => {
+        const countdownElement = match.querySelector(".STING-WEB-Time-Descending");
+        const timeElement = match.querySelector(".STING-WEB-Time");
+        const statusElement = match.querySelector(".STING-WEB-Status");
+        const hereElement = match.querySelector(".STING-WEB-Play");
 
-          const matchStartTime = countdownElement.getAttribute("data-start");
-          const matchEndTime = countdownElement.getAttribute("data-end");
+        const matchStartTime = countdownElement.getAttribute("data-start");
+        const matchEndTime = countdownElement.getAttribute("data-end");
 
-          const matchStartDate = new Date(matchStartTime);
-          const matchEndDate = new Date(matchEndTime);
+        const matchStartDate = new Date(matchStartTime);
+        const matchEndDate = new Date(matchEndTime);
 
-          timeElement.textContent = matchStartDate.toLocaleTimeString("en-EG", {
+        timeElement.textContent = matchStartDate.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
             hour12: true,
-          });
+            timeZoneName: 'short'  
+        });
 
-          const interval = setInterval(() => {
+        const interval = setInterval(() => {
             const now = new Date();
             const timeRemaining = matchStartDate - now;
             const timeToEnd = matchEndDate - now;
 
             if (timeToEnd <= 0) {
-              hereElement.textContent = "المباراة انتهت";
-              statusElement.textContent = "انتهت";
-              clearInterval(interval);
-              match.classList.add("END");
+                hereElement.textContent = "المباراة انتهت";
+                statusElement.textContent = "انتهت";
+                clearInterval(interval);
+                match.classList.add("END");
             } else if (timeRemaining <= 0 && timeToEnd > 0) {
-              hereElement.textContent = "مشاهدة المباراة";
-              statusElement.textContent = "مباشر الآن";
-              match.classList.add("LIVE");
+                hereElement.textContent = "مشاهدة المباراة";
+                statusElement.textContent = "مباشر الآن";
+                match.classList.add("LIVE");
             } else if (timeRemaining <= 30 * 60 * 1000) {
-              const minutesRemaining = Math.floor(timeRemaining / (1000 * 60));
-              statusElement.textContent = "بعد قليل";
-              countdownElement.textContent = `${minutesRemaining} دقيقة`;
-              match.classList.add("SOON");
-              hereElement.textContent = "بعد قليل";
+                const minutesRemaining = Math.floor(timeRemaining / (1000 * 60));
+                statusElement.textContent = "بعد قليل";
+                countdownElement.textContent = `${minutesRemaining} دقيقة`;
+                match.classList.add("SOON");
+                hereElement.textContent = "بعد قليل";
             } else {
-              const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-              const hours = Math.floor(
-                (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-              );
-              const minutes = Math.floor(
-                (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
-              );
-              const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-              let countdownText = "";
-              if (days > 0) {
-                countdownText += `${days}:`;
-              }
-              if (days > 0 || hours > 0) {
-                countdownText += `${hours.toString().padStart(2, "0")}:`;
-              }
-              countdownText += `${minutes.toString().padStart(2, "0")}:${seconds
-                .toString()
-                .padStart(2, "0")}`;
-              hereElement.textContent = "لم تبدأ";
-              countdownElement.textContent = countdownText;
-              statusElement.textContent = "لم تبدأ بعد";
-              match.classList.add("NOT");
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor(
+                    (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                );
+                const minutes = Math.floor(
+                    (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
+                );
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                let countdownText = "";
+                if (days > 0) {
+                    countdownText += `${days}:`;
+                }
+                if (days > 0 || hours > 0) {
+                    countdownText += `${hours.toString().padStart(2, "0")}:`;
+                }
+                countdownText += `${minutes.toString().padStart(2, "0")}:${seconds
+                    .toString()
+                    .padStart(2, "0")}`;
+                hereElement.textContent = "لم تبدأ";
+                countdownElement.textContent = countdownText;
+                statusElement.textContent = "لم تبدأ بعد";
+                match.classList.add("NOT");
             }
-          }, 100);
-        });
-      }
+        }, 100);
+    });
+}
 
         function getMatchLinks() {
             const linksElement = document.querySelector('match-link');
