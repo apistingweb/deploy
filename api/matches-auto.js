@@ -24,13 +24,9 @@ function startCountdown() {
         const matchStartDate = new Date(matchStartTime); // تاريخ بداية المباراة
         const matchEndDate = new Date(matchEndTime); // تاريخ نهاية المباراة
 
-        // خصم 3 ساعات من توقيت المباراة الأصلي (الذي يكون بتوقيت GMT+3)
-        const utcStartDate = new Date(matchStartDate.getTime() - 3 * 60 * 60 * 1000); // خصم 3 ساعات (تحويل إلى UTC)
-        const utcEndDate = new Date(matchEndDate.getTime() - 3 * 60 * 60 * 1000); // خصم 3 ساعات (تحويل إلى UTC)
-
         // تعديل التوقيت ليظهر حسب توقيت المنطقة الزمنية للزائر
-        const localStartDate = new Date(utcStartDate.getTime() + userTimeZoneOffset * 60000); // إضافة الفارق الزمني للزائر
-        const localEndDate = new Date(utcEndDate.getTime() + userTimeZoneOffset * 60000); // إضافة الفارق الزمني للزائر
+        const localStartDate = new Date(matchStartDate.getTime() - userTimeZoneOffset * 60000);
+        const localEndDate = new Date(matchEndDate.getTime() - userTimeZoneOffset * 60000);
 
         // عرض الوقت حسب توقيت المنطقة الزمنية للمستخدم
         timeElement.textContent = localStartDate.toLocaleTimeString("en-US", {
@@ -43,8 +39,8 @@ function startCountdown() {
         // دالة لحساب العد التنازلي للمباراة
         const interval = setInterval(() => {
             const now = new Date();
-            const timeRemaining = localStartDate - now;
-            const timeToEnd = localEndDate - now;
+            const timeRemaining = matchStartDate - now;
+            const timeToEnd = matchEndDate - now;
 
             if (timeToEnd <= 0) {
                 hereElement.textContent = "المباراة انتهت";
@@ -88,6 +84,7 @@ function startCountdown() {
         }, 100);
     });
 }
+
 
 
         function getMatchLinks() {
